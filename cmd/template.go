@@ -15,6 +15,24 @@ type migraineTemplate struct {
 
 var (
 	migraineDir = "./migraines"
+	templateStr = `package migraines
+
+import (
+	m "github.com/dnnyjns/migraine"
+	"github.com/jinzhu/gorm"
+)
+
+// Migraine for {{.Name}}
+func init() {
+	migraine := &m.Migraine{
+		Version: "{{.Version}}",
+		Perform: func(db *gorm.DB) {
+
+		},
+	}
+	m.Add(migraine)
+}
+	`
 )
 
 func (m migraineTemplate) file() string {
@@ -38,7 +56,7 @@ func createDir() {
 
 func createTemplate(name string) {
 	m := &migraineTemplate{name: name}
-	tmpl, err := template.New("migraine.tmpl").ParseFiles("cmd/migraine.tmpl")
+	tmpl, err := template.New("migraine.tmpl").Parse(templateStr)
 	if err != nil {
 		panic(err)
 	}
