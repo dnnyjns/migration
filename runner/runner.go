@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/jinzhu/gorm"
@@ -29,7 +28,6 @@ func (r *Runner) Run() {
 	for _, migraine := range r.Migs {
 		length := len(persisted)
 		i := sort.Search(length, func(i int) bool { return persisted[i].Version == migraine.Version })
-		fmt.Println(i)
 		if i == length {
 			migraine.Run(r.Db)
 		}

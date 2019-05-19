@@ -4,10 +4,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+type performFn func(*gorm.DB) error
+
 type Migraine struct {
-	DisableDDL bool           `gorm:"-"`
-	Perform    func(*gorm.DB) `gorm:"-"`
-	Version    string         `gorm:"size:255;PRIMARY_KEY;NOT NULL"`
+	DisableDDL bool      `gorm:"-"`
+	Perform    performFn `gorm:"-"`
+	Version    string    `gorm:"size:255;PRIMARY_KEY;NOT NULL"`
 }
 
 func (m Migraine) Run(db *gorm.DB) {
@@ -16,11 +18,16 @@ func (m Migraine) Run(db *gorm.DB) {
 		tx = db
 	} else {
 		tx = db.Begin()
+		defer tx.Commit()
 	}
-	defer tx.Commit()
-	m.Perform(tx)
+
+	if err := m.Perform(tx); err != nil {
+		tx.Rollback()
+		panic(err)
+	}
 
 	if err := tx.Create(&m).Error; err != nil {
 		tx.Rollback()
+		panic(err)
 	}
 }
