@@ -10,7 +10,6 @@ func newCommand() *cobra.Command {
 		Short: "Generate a new migraine",
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			createDir()
 			createTemplate(args[0])
 		},
 	}

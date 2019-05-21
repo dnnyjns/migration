@@ -12,7 +12,9 @@ func Execute() error {
 	}
 
 	// Register Command
+	rootCmd.AddCommand(initCommand())
 	rootCmd.AddCommand(newCommand())
+	rootCmd.AddCommand(runCommand())
 
 	// Run Command
 	return rootCmd.Execute()

@@ -12,6 +12,10 @@ type Migraine struct {
 	Version    string    `gorm:"size:255;PRIMARY_KEY;NOT NULL"`
 }
 
+var (
+	internalMigraines migraines
+)
+
 func (m Migraine) Run(db *gorm.DB) {
 	var tx *gorm.DB
 	if m.DisableDDL {
@@ -30,4 +34,13 @@ func (m Migraine) Run(db *gorm.DB) {
 		tx.Rollback()
 		panic(err)
 	}
+}
+
+func Add(m *Migraine) {
+	internalMigraines = append(internalMigraines, m)
+}
+
+func Run(db *gorm.DB) error {
+	db.AutoMigrate(&Migraine{})
+	return internalMigraines.Run(db)
 }
