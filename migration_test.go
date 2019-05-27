@@ -1,15 +1,15 @@
-package runner
+package migration
 
 import (
 	"testing"
 )
 
 func TestSort(t *testing.T) {
-	m := migraines{
-		&Migraine{
+	m := migrations{
+		&Migration{
 			Version: "2",
 		},
-		&Migraine{
+		&Migration{
 			Version: "1",
 		},
 	}
