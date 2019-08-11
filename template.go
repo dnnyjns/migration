@@ -13,16 +13,16 @@ type migrationTemplate struct {
 }
 
 var (
-	migrationTemplateStr = `package migraines
+	migrationTemplateStr = `package migrations
 
 import (
-	"github.com/dnnyjns/migraine"
+	"github.com/dnnyjns/migration"
 	"github.com/jinzhu/gorm"
 )
 
-// Migraine for {{.Name}}
+// Migration for {{.Name}}
 func init() {
-	migraine.Add(&migraine.Migraine{
+	migration.Add(&migration.Migration{
 		Version: "{{.Version}}",
 		Perform: func(db *gorm.DB) error {
 

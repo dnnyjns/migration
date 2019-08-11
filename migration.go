@@ -1,8 +1,8 @@
 package migration
 
 import (
-	"html/template"
 	"os"
+	"text/template"
 
 	"github.com/jinzhu/gorm"
 )
@@ -27,7 +27,7 @@ func Add(m *Migration) {
 func Create(name string) {
 	m := &migrationTemplate{dir: Dir, name: name}
 	m.createDir()
-	tmpl, err := template.New("migraine").Parse(migrationTemplateStr)
+	tmpl, err := template.New("migration").Parse(migrationTemplateStr)
 	if err != nil {
 		panic(err)
 	}
