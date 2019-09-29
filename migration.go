@@ -24,8 +24,12 @@ func Add(m *Migration) {
 	internalMigrations = append(internalMigrations, m)
 }
 
-func Create(name string) {
-	m := &migrationTemplate{dir: Dir, name: name}
+func CreateDefault(name string) {
+	Create(Dir, name)
+}
+
+func Create(dir, name string) {
+	m := &migrationTemplate{dir: dir, name: name}
 	m.createDir()
 	tmpl, err := template.New("migration").Parse(migrationTemplateStr)
 	if err != nil {
