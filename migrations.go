@@ -8,6 +8,21 @@ import (
 
 type migrations []*Migration
 
+func (m *migrations) IsComplete(db *gorm.DB) bool {
+	var (
+		count int
+		total = len(*m)
+		ids   = make([]string, total)
+	)
+
+	for i, migration := range *m {
+		ids[i] = migration.Version
+	}
+	db.Model(&Migration{}).Where(ids).Count(&count)
+
+	return total == count
+}
+
 func (m *migrations) Migrate(db *gorm.DB) error {
 	var (
 		ids       = make([]string, len(*m))

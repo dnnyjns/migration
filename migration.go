@@ -46,6 +46,10 @@ func Create(dir, name string) {
 	}
 }
 
+func IsComplete(db *gorm.DB) bool {
+	return internalMigrations.IsComplete(db)
+}
+
 func Migrate(db *gorm.DB) error {
 	db.AutoMigrate(&Migration{})
 	return internalMigrations.Migrate(db)
