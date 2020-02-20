@@ -36,10 +36,10 @@ func Create(dir, name string) {
 		panic(err)
 	}
 	f, err := os.Create(m.file())
-	defer f.Close()
 	if err != nil {
 		panic(err)
 	}
+	defer f.Close()
 	err = tmpl.Execute(f, *m)
 	if err != nil {
 		panic(err)

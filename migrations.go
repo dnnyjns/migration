@@ -35,10 +35,11 @@ func (m *migrations) Migrate(db *gorm.DB) error {
 	db.Model(&Migration{}).Where(ids).Order("version").Find(&persisted)
 
 	m.sort()
+	length := len(persisted)
 	for _, migration := range *m {
-		length := len(persisted)
-		i := sort.Search(length, func(i int) bool { return persisted[i].Version == migration.Version })
-		if i == length {
+		version := migration.Version
+		i := sort.Search(length, func(i int) bool { return persisted[i].Version >= version })
+		if !(i < length && persisted[i].Version == version) {
 			migration.Migrate(db)
 		}
 	}
